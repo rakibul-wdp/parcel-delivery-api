@@ -1,12 +1,11 @@
 import httpStatus from "http-status-codes";
 import { FilterQuery } from "mongoose";
-import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
-import { paginationHelpers } from "../../utils/paginationHelpers";
 import { IGenericResponse } from "../../interfaces/common";
-import { User } from "./user.model";
-import { IUser, UserRole } from "./user.interface";
+import { paginationHelpers } from "../../utils/paginationHelpers";
 import { userSearchableFields } from "./user.constant";
+import { IUser } from "./user.interface";
+import { User } from "./user.model";
 
 const createUser = async (payload: IUser): Promise<IUser> => {
   const existingUser = await User.findOne({ email: payload.email });

@@ -1,11 +1,11 @@
 import httpStatus from "http-status-codes";
 import { FilterQuery } from "mongoose";
 import AppError from "../../errorHelpers/AppError";
-import { paginationHelpers } from "../../utils/paginationHelpers";
 import { IGenericResponse } from "../../interfaces/common";
-import { Parcel } from "./parcel.model";
-import { IParcel, ParcelStatus } from "./parcel.interface";
+import { paginationHelpers } from "../../utils/paginationHelpers";
 import { parcelSearchableFields } from "./parcel.constant";
+import { IParcel, ParcelStatus } from "./parcel.interface";
+import { Parcel } from "./parcel.model";
 
 const calculateFee = (weight: number, volume: number): number => {
   const baseFee = 50;

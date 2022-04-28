@@ -7,7 +7,8 @@ import {
   updateParcelStatusValidation,
   parcelFilterValidation,
 } from "./parcel.validation";
-import { UserRole, ParcelStatus } from "./parcel.interface";
+import { ParcelStatus } from "./parcel.interface";
+import { UserRole } from "../user/user.interface";
 
 const router = Router();
 
