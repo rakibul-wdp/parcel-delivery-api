@@ -5,12 +5,15 @@ A secure, modular, and role-based backend API for a parcel delivery system built
 ## 🚀 Features
 
 - 🔐 JWT-based authentication with three roles: `admin`, `sender`, `receiver`
-- 📦 Parcel management with status tracking
-- 👥 Role-based access control
-- 📊 Comprehensive status history for parcels
+- 📦 Complete parcel management with status tracking
+- 👥 Role-based access control with proper authorization
+- 📊 Comprehensive status history with timestamps and notes
 - 💰 Dynamic fee calculation based on weight and dimensions
+- 🔍 Advanced filtering, searching, and pagination
 - 🛡️ Security best practices (helmet, rate limiting, CORS)
-- ✅ Input validation with Zod
+- ✅ Comprehensive input validation with Zod
+- 🎯 Proper error handling with meaningful error messages
+- 📝 API documentation with Postman collection
 
 ## 🛠️ Tech Stack
 
@@ -21,30 +24,33 @@ A secure, modular, and role-based backend API for a parcel delivery system built
 - **Authentication**: JWT with bcrypt password hashing
 - **Validation**: Zod
 - **Security**: Helmet, CORS, rate limiting
+- **Error Handling**: Custom error classes with proper HTTP status codes
 
 ## 📋 API Endpoints
 
 ### Authentication
 
-- `POST /api/auth/register` - Register a new user
-- `POST /api/auth/login` - Login user
+- `POST /api/v1/auth/register` - Register a new user
+- `POST /api/v1/auth/login` - Login user
 
 ### Users
 
-- `GET /api/users/profile` - Get current user profile
-- `GET /api/users` - Get all users (Admin only)
-- `PATCH /api/users/:id/block` - Block/unblock user (Admin only)
+- `GET /api/v1/auth/profile` - Get current user profile
+- `GET /api/v1/auth` - Get all users (Admin only)
+- `GET /api/v1/auth/:id` - Get user by ID (Admin only)
+- `PATCH /api/v1/auth/:id` - Update user (Admin only)
 
 ### Parcels
 
-- `POST /api/parcels` - Create a new parcel (Sender only)
-- `GET /api/parcels/my-parcels` - Get sender's parcels
-- `GET /api/parcels/incoming` - Get receiver's incoming parcels
-- `GET /api/parcels/:id` - Get parcel details
-- `PATCH /api/parcels/:id/cancel` - Cancel parcel (Sender only)
-- `PATCH /api/parcels/:id/deliver` - Confirm delivery (Receiver only)
-- `PATCH /api/parcels/:id/status` - Update parcel status (Admin only)
-- `GET /api/parcels` - Get all parcels with filtering (Admin only)
+- `GET /api/v1/parcels/track/:trackingId` - Track parcel by ID (Public)
+- `POST /api/v1/parcels` - Create a new parcel (Sender only)
+- `GET /api/v1/parcels/my-parcels` - Get sender's parcels (Sender only)
+- `PATCH /api/v1/parcels/:id/cancel` - Cancel parcel (Sender only)
+- `GET /api/v1/parcels/incoming` - Get receiver's incoming parcels (Receiver only)
+- `PATCH /api/v1/parcels/:id/deliver` - Confirm delivery (Receiver only)
+- `GET /api/v1/parcels` - Get all parcels with filtering (Admin only)
+- `GET /api/v1/parcels/:id` - Get parcel details
+- `PATCH /api/v1/parcels/:id/status` - Update parcel status (Admin only)
 
 ## 🚀 Getting Started
 
