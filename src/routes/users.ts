@@ -7,6 +7,9 @@ const router = express.Router();
 // Get user profile
 router.get("/profile", authenticate, async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     const user = await User.findById(req.user._id).select("-password");
     res.json(user);
   } catch (error) {

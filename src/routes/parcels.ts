@@ -47,6 +47,9 @@ router.post(
   authorize("sender"),
   validate(createParcelSchema),
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     try {
       const { receiver, type, weight, dimensions, estimatedDelivery, notes } =
         req.body;
@@ -92,6 +95,9 @@ router.get(
   authenticate,
   authorize("sender"),
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     try {
       const parcels = await Parcel.find({ sender: req.user._id })
         .populate("sender", "name email phone")
@@ -110,6 +116,9 @@ router.get(
   authenticate,
   authorize("receiver"),
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     try {
       const parcels = await Parcel.find({
         "receiver.email": req.user.email,
@@ -127,6 +136,9 @@ router.get(
 
 // Get parcel by ID
 router.get("/:id", authenticate, async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "User not authenticated" });
+  }
   try {
     const parcel = await Parcel.findById(req.params.id)
       .populate("sender", "name email phone address")
@@ -163,6 +175,9 @@ router.patch(
   authenticate,
   authorize("sender"),
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     try {
       const parcel = await Parcel.findById(req.params.id);
 
@@ -183,7 +198,8 @@ router.patch(
       parcel.status = "cancelled";
       parcel.statusLog.push({
         status: "cancelled",
-        updatedBy: req.user._id,
+        timestamp: new Date(),
+        updatedBy: req.user!._id,
         note: "Parcel cancelled by sender",
       });
 
@@ -201,6 +217,9 @@ router.patch(
   authenticate,
   authorize("receiver"),
   async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
     try {
       const parcel = await Parcel.findById(req.params.id);
 
@@ -222,7 +241,8 @@ router.patch(
       parcel.actualDelivery = new Date();
       parcel.statusLog.push({
         status: "delivered",
-        updatedBy: req.user._id,
+        timestamp: new Date(),
+        updatedBy: req.user!._id,
         note: "Parcel delivered and confirmed by receiver",
       });
 
@@ -252,7 +272,8 @@ router.patch(
       parcel.status = status;
       parcel.statusLog.push({
         status,
-        updatedBy: req.user._id,
+        timestamp: new Date(),
+        updatedBy: req.user!._id,
         note,
         location,
       });

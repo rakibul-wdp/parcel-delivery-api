@@ -1,8 +1,9 @@
 import express from "express";
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions } from "jsonwebtoken";
 import { User } from "../models/User";
 import { validate } from "../middleware/validation";
 import { z } from "zod";
+import { env } from "../config/env";
 
 const router = express.Router();
 
@@ -47,11 +48,12 @@ router.post("/register", validate(registerSchema), async (req, res) => {
 
     await user.save();
 
-    // Generate token
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      process.env.JWT_SECRET!,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      env.JWT_SECRET,
+      {
+        expiresIn: env.JWT_EXPIRES_IN || "7d",
+      } as SignOptions
     );
 
     res.status(201).json({
@@ -88,10 +90,13 @@ router.post("/login", validate(loginSchema), async (req, res) => {
     }
 
     // Generate token
+
     const token = jwt.sign(
       { userId: user._id, role: user.role },
-      process.env.JWT_SECRET!,
-      { expiresIn: process.env.JWT_EXPIRES_IN }
+      env.JWT_SECRET,
+      {
+        expiresIn: env.JWT_EXPIRES_IN || "7d",
+      } as SignOptions
     );
 
     res.json({

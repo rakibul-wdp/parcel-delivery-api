@@ -35,7 +35,7 @@ export const authenticate = async (
 
 export const authorize = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
-    if (!roles.includes(req.user.role)) {
+    if (!req.user || !roles.includes(req.user.role)) {
       res.status(403).json({
         message: `Access denied. Required role: ${roles.join(", ")}`,
       });
