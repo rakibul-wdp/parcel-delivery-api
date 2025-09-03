@@ -63,6 +63,7 @@ router.post(
 
       const parcel = new Parcel({
         sender: req.user._id,
+        trackingId: "temp-" + Date.now(),
         receiver,
         type,
         weight,
