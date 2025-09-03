@@ -61,9 +61,14 @@ router.post(
       const volumeFee = volume * 0.01;
       const totalFee = baseFee + weightFee + volumeFee;
 
+      const date = new Date();
+      const dateStr = date.toISOString().slice(0, 10).replace(/-/g, "");
+      const randomNum = Math.floor(100000 + Math.random() * 900000);
+      const trackingId = `TRK-${dateStr}-${randomNum}`;
+
       const parcel = new Parcel({
+        trackingId,
         sender: req.user._id,
-        trackingId: "temp-" + Date.now(),
         receiver,
         type,
         weight,
@@ -74,6 +79,7 @@ router.post(
         statusLog: [
           {
             status: "requested",
+            timestamp: new Date(),
             updatedBy: req.user._id,
             note: "Parcel creation requested",
           },
