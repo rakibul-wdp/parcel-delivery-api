@@ -51,7 +51,14 @@ const statusLogSchema = new Schema<IStatusLog>({
 
 const parcelSchema = new Schema<IParcelDocument>(
   {
-    trackingId: { type: String, unique: true, required: true },
+    trackingId: {
+      type: String,
+      unique: true,
+      required: true,
+      default: function () {
+        return "temp-" + Date.now();
+      },
+    },
     sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
     receiver: {
       name: { type: String, required: true },
