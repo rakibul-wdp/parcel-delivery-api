@@ -1,10 +1,11 @@
 import { Response } from "express";
+import httpStatus from "http-status-codes";
 
 interface ISendResponse<T> {
   res: Response;
-  data: T;
+  data?: T;
   message: string;
-  statusCode: number;
+  statusCode?: number;
   meta?: {
     page: number;
     limit: number;
@@ -16,13 +17,21 @@ export const sendResponse = <T>({
   res,
   data,
   message,
-  statusCode,
+  statusCode = httpStatus.OK,
   meta,
 }: ISendResponse<T>) => {
-  res.status(statusCode).json({
+  const response: any = {
     success: true,
     message,
-    data,
-    meta,
-  });
+  };
+
+  if (data !== undefined) {
+    response.data = data;
+  }
+
+  if (meta !== undefined) {
+    response.meta = meta;
+  }
+
+  res.status(statusCode).json(response);
 };

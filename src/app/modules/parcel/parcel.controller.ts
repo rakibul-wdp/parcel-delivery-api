@@ -8,7 +8,8 @@ import { ParcelStatus } from "./parcel.interface";
 const createParcel = catchAsync(async (req: Request, res: Response) => {
   const result = await ParcelService.createParcel(req.body, req.user._id);
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.CREATED,
     message: "Parcel created successfully",
     data: result,
@@ -18,7 +19,8 @@ const createParcel = catchAsync(async (req: Request, res: Response) => {
 const getAllParcels = catchAsync(async (req: Request, res: Response) => {
   const result = await ParcelService.getAllParcels(req.query, req.query);
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "Parcels retrieved successfully",
     data: result.data,
@@ -33,7 +35,8 @@ const getParcelsBySender = catchAsync(async (req: Request, res: Response) => {
     req.query
   );
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "Your parcels retrieved successfully",
     data: result.data,
@@ -48,7 +51,8 @@ const getIncomingParcels = catchAsync(async (req: Request, res: Response) => {
     req.query
   );
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "Incoming parcels retrieved successfully",
     data: result.data,
@@ -59,7 +63,8 @@ const getIncomingParcels = catchAsync(async (req: Request, res: Response) => {
 const getSingleParcel = catchAsync(async (req: Request, res: Response) => {
   const result = await ParcelService.getSingleParcel(req.params.id);
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "Parcel retrieved successfully",
     data: result,
@@ -76,7 +81,8 @@ const updateParcelStatus = catchAsync(async (req: Request, res: Response) => {
     req.user._id
   );
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "Parcel status updated successfully",
     data: result,
@@ -86,7 +92,8 @@ const updateParcelStatus = catchAsync(async (req: Request, res: Response) => {
 const cancelParcel = catchAsync(async (req: Request, res: Response) => {
   const result = await ParcelService.cancelParcel(req.params.id, req.user._id);
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "Parcel cancelled successfully",
     data: result,
@@ -99,7 +106,8 @@ const confirmDelivery = catchAsync(async (req: Request, res: Response) => {
     req.user.email
   );
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "Delivery confirmed successfully",
     data: result,
@@ -112,7 +120,8 @@ const getParcelByTrackingId = catchAsync(
       req.params.trackingId
     );
 
-    sendResponse(res, {
+    sendResponse({
+      res,
       statusCode: httpStatus.OK,
       message: "Parcel retrieved successfully",
       data: result,

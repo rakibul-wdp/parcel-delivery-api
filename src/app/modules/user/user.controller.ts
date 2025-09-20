@@ -14,7 +14,8 @@ const createUser = catchAsync(async (req: Request, res: Response) => {
     role: result.role,
   });
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.CREATED,
     message: "User created successfully",
     data: {
@@ -41,7 +42,8 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
     role: result.role,
   });
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "User logged in successfully",
     data: {
@@ -61,7 +63,8 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getAllUsers(req.query, req.query);
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "Users retrieved successfully",
     data: result.data,
@@ -72,7 +75,8 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getSingleUser(req.params.id);
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "User retrieved successfully",
     data: result,
@@ -82,7 +86,8 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
 const updateUser = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.updateUser(req.params.id, req.body);
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "User updated successfully",
     data: result,
@@ -92,7 +97,8 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
 const getProfile = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getProfile(req.user._id);
 
-  sendResponse(res, {
+  sendResponse({
+    res,
     statusCode: httpStatus.OK,
     message: "Profile retrieved successfully",
     data: result,

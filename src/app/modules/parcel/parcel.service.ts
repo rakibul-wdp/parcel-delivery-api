@@ -1,5 +1,5 @@
 import httpStatus from "http-status-codes";
-import { FilterQuery } from "mongoose";
+import { FilterQuery, Types } from "mongoose";
 import AppError from "../../errorHelpers/AppError";
 import { IGenericResponse } from "../../interfaces/common";
 import { paginationHelpers } from "../../utils/paginationHelpers";
@@ -34,7 +34,7 @@ const getAllParcels = async (
   paginationOptions: any
 ): Promise<IGenericResponse<IParcel[]>> => {
   const { search, status, startDate, endDate, ...filterData } = filters;
-  const andConditions: FilterQuery<IParcel> = [];
+  const andConditions: any[] = [];
 
   if (search) {
     andConditions.push({
@@ -62,11 +62,14 @@ const getAllParcels = async (
   }
 
   if (Object.keys(filterData).length) {
-    andConditions.push({
-      $and: Object.entries(filterData).map(([field, value]) => ({
-        [field]: value,
-      })),
-    });
+    const filterConditions = Object.entries(filterData).map(
+      ([field, value]) => {
+        if (value === "true") return { [field]: true };
+        if (value === "false") return { [field]: false };
+        return { [field]: value };
+      }
+    );
+    andConditions.push(...filterConditions);
   }
 
   const { page, limit, skip, sortBy, sortOrder } =
@@ -105,7 +108,7 @@ const getParcelsBySender = async (
   filters: any,
   paginationOptions: any
 ): Promise<IGenericResponse<IParcel[]>> => {
-  const andConditions: FilterQuery<IParcel> = [{ sender: userId }];
+  const andConditions: any[] = [{ sender: new Types.ObjectId(userId) }];
 
   const { search, status } = filters;
 
@@ -163,7 +166,7 @@ const getIncomingParcels = async (
   filters: any,
   paginationOptions: any
 ): Promise<IGenericResponse<IParcel[]>> => {
-  const andConditions: FilterQuery<IParcel> = [
+  const andConditions: any[] = [
     { "receiver.email": email },
     { status: { $ne: ParcelStatus.DELIVERED } },
   ];

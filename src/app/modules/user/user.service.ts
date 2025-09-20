@@ -35,7 +35,7 @@ const getAllUsers = async (
   paginationOptions: any
 ): Promise<IGenericResponse<IUser[]>> => {
   const { search, ...filterData } = filters;
-  const andConditions: FilterQuery<IUser> = [];
+  const andConditions: any[] = [];
 
   if (search) {
     andConditions.push({
@@ -46,11 +46,14 @@ const getAllUsers = async (
   }
 
   if (Object.keys(filterData).length) {
-    andConditions.push({
-      $and: Object.entries(filterData).map(([field, value]) => ({
-        [field]: value,
-      })),
-    });
+    const filterConditions = Object.entries(filterData).map(
+      ([field, value]) => {
+        if (value === "true") return { [field]: true };
+        if (value === "false") return { [field]: false };
+        return { [field]: value };
+      }
+    );
+    andConditions.push(...filterConditions);
   }
 
   const { page, limit, skip, sortBy, sortOrder } =

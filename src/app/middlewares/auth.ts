@@ -5,6 +5,23 @@ import { envVars } from "../config/env";
 import AppError from "../errorHelpers/AppError";
 import { User } from "../modules/user/user.model";
 
+declare global {
+  namespace Express {
+    interface Request {
+      user: {
+        _id: string;
+        email: string;
+        role: string;
+        isBlocked: boolean;
+        name: string;
+        phone: string;
+        address: string;
+        [key: string]: any;
+      };
+    }
+  }
+}
+
 export const authenticate = async (
   req: Request,
   res: Response,
@@ -24,7 +41,18 @@ export const authenticate = async (
       throw new AppError(httpStatus.UNAUTHORIZED, "User not found or blocked");
     }
 
-    req.user = user;
+    const userObject = user.toObject();
+
+    req.user = {
+      _id: userObject._id.toString(),
+      email: userObject.email,
+      role: userObject.role,
+      isBlocked: userObject.isBlocked,
+      name: userObject.name,
+      phone: userObject.phone,
+      address: userObject.address,
+    };
+
     next();
   } catch (error) {
     next(error);
